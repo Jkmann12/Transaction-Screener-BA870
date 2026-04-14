@@ -1,0 +1,8 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+models/saved/*.pkl
+data/synthetic_transactions.csv
