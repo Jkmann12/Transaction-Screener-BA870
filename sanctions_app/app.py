@@ -43,22 +43,6 @@ st.session_state['high_threshold'] = risk_threshold_high
 st.session_state['grey_threshold'] = risk_threshold_grey
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📚 Course Concept Connections")
-st.sidebar.info(
-    "TransactIQ integrates BA775 concepts:\n\n"
-    "📊 **Logit Regression** (Lecture 3)\n"
-    "Sanctions probability model mirrors Altman's logit distress predictor\n\n"
-    "🔢 **Benford's Law** (Lecture 4)\n"
-    "First-digit analysis detects fabricated transaction amounts\n\n"
-    "⚠️ **Altman Z-Score Zones** (Lec 3-4)\n"
-    "High/Grey/Low risk zones mirror Z-Score discrimination bands\n\n"
-    "📈 **Financial Ratios / Du Pont** (Lecture 2)\n"
-    "Counterparty ratio analysis on the Lookup page\n\n"
-    "💹 **yfinance** (Lecture 3)\n"
-    "Live financial data for counterparty assessment"
-)
-
-st.sidebar.markdown("---")
 st.sidebar.markdown("### ℹ️ About")
 st.sidebar.caption(
     "Data sources: OFAC SDN, UN Sanctions, OpenSanctions, World Bank, yfinance. "

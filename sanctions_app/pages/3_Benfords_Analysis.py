@@ -54,15 +54,7 @@ with st.expander("📖 What is Benford's Law?", expanded=False):
     - Structured transactions (e.g., just-below-reporting-threshold amounts) cluster around specific digits
     - Significant deviations from Benford's distribution are a red flag, used by forensic accountants and auditors
 
-    **This directly connects to the Beneish M-Score framework (Lecture 4)**, which uses financial ratios
-    to detect earnings manipulation — both approaches flag statistical anomalies in financial data.
     """)
-
-st.info(
-    "**📊 Lecture 4 Connection:** Benford's Law deviation is one of the 9 features in our ML model "
-    "(computed via chi-squared test per counterparty). The synthetic data generator deliberately "
-    "violates Benford for suspicious transactions by over-representing digits 5-9."
-)
 
 # Load data
 if 'screening_results' in st.session_state:

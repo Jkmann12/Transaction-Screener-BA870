@@ -41,13 +41,6 @@ st.markdown(
     "feature importance, regression coefficients, ROC curves, and confusion matrices."
 )
 
-st.info(
-    "**📊 Lecture 3 Connection:** The **Logistic Regression coefficients** below mirror the logit framework "
-    "used in Altman's financial distress prediction model. Each coefficient shows the log-odds impact "
-    "of that feature on the probability of sanctions involvement — directly analogous to how Altman's "
-    "Z-Score weights financial ratios to classify distress probability."
-)
-
 # Load models
 @st.cache_resource(show_spinner="Loading models...")
 def get_models():

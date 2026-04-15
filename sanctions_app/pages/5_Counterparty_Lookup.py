@@ -29,14 +29,6 @@ st.markdown(
     "its financial scale is consistent with the transaction volumes in the screened data."
 )
 
-st.info(
-    "**📊 Lecture 2 Connection:** This page applies **Du Pont / ratio analysis** to assess counterparty "
-    "financial health. Revenue, total assets, current ratio, and debt-to-equity are computed from "
-    "live yfinance data — mirroring the financial ratio framework from Lecture 2. "
-    "Large mismatches between a company's revenue scale and its transaction volume are a red flag, "
-    "similar to how the **Beneish M-Score** (Lecture 4) uses ratio anomalies to detect manipulation."
-)
-
 # yfinance import
 try:
     import yfinance as yf

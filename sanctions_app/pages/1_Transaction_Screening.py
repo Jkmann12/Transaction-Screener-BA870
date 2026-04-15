@@ -33,14 +33,6 @@ st.markdown(
     "Screen financial transactions against global sanctions lists using ML-powered composite scoring."
 )
 
-st.info(
-    "**📊 Lecture 3 Connection:** This screening pipeline uses **Logistic Regression** — "
-    "the same logit framework used in Altman's Z-Score financial distress prediction — "
-    "combined with XGBoost to generate composite risk probabilities. "
-    "The composite score mirrors the Z-Score's use of financial ratios to classify entities "
-    "into risk zones (High / Grey / Low)."
-)
-
 # Get thresholds from session state or defaults
 high_threshold = st.session_state.get('high_threshold', DEFAULT_HIGH_THRESHOLD)
 grey_threshold = st.session_state.get('grey_threshold', DEFAULT_GREY_THRESHOLD)

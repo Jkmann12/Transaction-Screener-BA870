@@ -29,14 +29,6 @@ st.set_page_config(page_title="Risk Dashboard", page_icon="📊", layout="wide")
 st.title("📊 Risk Dashboard")
 st.markdown("Visual overview of sanctions screening results across all screened transactions.")
 
-st.info(
-    "**⚠️ Lectures 3-4 Connection:** The risk score zones below directly mirror **Altman Z-Score discrimination zones**: "
-    "High Risk (score > threshold) = Z < 1.80 distress zone; "
-    "Grey Zone = 1.80 < Z < 2.99; "
-    "Low Risk = Z > 2.99 safe zone. "
-    "Both frameworks use continuous scores with threshold-based classification."
-)
-
 # Check for results
 if 'screening_results' not in st.session_state:
     st.warning("⚠️ No screening results yet. Please run Transaction Screening first.")
