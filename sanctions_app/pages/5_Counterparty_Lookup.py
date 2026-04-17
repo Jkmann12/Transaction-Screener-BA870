@@ -4,10 +4,7 @@ BA775 Financial Analytics | Boston University
 
 Look up a publicly traded counterparty via yfinance and assess whether its
 financial profile is consistent with transaction volumes observed in screened data.
-
-Lecture 2 Connection: Applies Du Pont / ratio analysis to assess counterparty
-financial health, mirroring the framework from Lecture 2. Revenue-to-transaction
-volume mismatch detection parallels Beneish M-Score ratio anomaly detection.
+Applies Du Pont / ratio analysis to assess counterparty financial health.
 """
 import streamlit as st
 import pandas as pd
@@ -83,9 +80,9 @@ if lookup_btn and ticker_input:
             col2.metric("Annual Revenue", f"${revenue/1e9:.2f}B" if revenue > 0 else "N/A")
             col3.metric("Total Assets", f"${total_assets/1e9:.2f}B" if total_assets > 0 else "N/A")
             col4.metric("Current Ratio", f"{current_ratio:.2f}" if current_ratio else "N/A",
-                        help="Current Assets / Current Liabilities — Lecture 2: liquidity ratio")
+                        help="Current Assets / Current Liabilities — liquidity ratio")
             col5.metric("Debt-to-Equity", f"{debt_equity:.2f}" if debt_equity else "N/A",
-                        help="Total Debt / Equity — Lecture 2: leverage ratio")
+                        help="Total Debt / Equity — leverage ratio")
 
             # Additional ratios
             st.markdown("#### 📋 Additional Metrics")
@@ -97,7 +94,7 @@ if lookup_btn and ticker_input:
 
             col1.metric("P/E Ratio", f"{pe_ratio:.1f}" if pe_ratio else "N/A")
             col2.metric("Return on Equity", f"{roe*100:.1f}%" if roe else "N/A",
-                        help="Lecture 2: Du Pont ROE decomposition")
+                        help="Du Pont ROE decomposition")
             col3.metric("Return on Assets", f"{roa*100:.1f}%" if roa else "N/A")
             col4.metric("Profit Margin", f"{profit_margin*100:.1f}%" if profit_margin else "N/A")
 
@@ -147,7 +144,7 @@ if lookup_btn and ticker_input:
 
             # Beta calculation (CAPM stretch goal)
             st.markdown("---")
-            st.markdown("#### 📉 Beta & Risk Profile (CAPM — Lecture 5 Stretch)")
+            st.markdown("#### 📉 Beta & Risk Profile (CAPM)")
 
             try:
                 import yfinance as yf2

@@ -3,11 +3,8 @@ Page 3: Benford's Law Analysis
 BA775 Financial Analytics | Boston University
 
 Per-counterparty Benford's Law conformance check on transaction amounts.
-
-Lecture 4 Connection: Benford's Law states that in naturally occurring financial data,
-the leading digit d appears with probability log10(1 + 1/d). This app uses Benford
-deviation as a fraud-detection feature, mirroring the Beneish M-Score's use of
-financial ratios to detect earnings manipulation.
+The leading digit d appears with probability log10(1 + 1/d) in naturally occurring
+financial data. Deviations are used as a fraud-detection feature.
 """
 import streamlit as st
 import pandas as pd

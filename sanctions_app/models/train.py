@@ -2,9 +2,6 @@
 
 Trains Logistic Regression and XGBoost models on synthetic data.
 Models are saved to models/saved/ for use in the Streamlit app.
-
-Lecture 3 Connection: Logistic Regression mirrors the logit framework used
-in Altman's financial distress prediction model.
 """
 import os
 import sys

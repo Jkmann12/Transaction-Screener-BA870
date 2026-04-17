@@ -4,9 +4,6 @@ BA775 Financial Analytics | Boston University
 
 Transparency into how the ML models work: feature importance, logit coefficients,
 ROC curves, and confusion matrices.
-
-Lecture 3 Connection: Displays logit regression coefficients and odds ratios,
-mirroring the logit framework used in Altman's financial distress prediction.
 """
 import streamlit as st
 import pandas as pd
@@ -116,7 +113,7 @@ st.markdown("---")
 
 # === VISUALIZATION 2: Logit Coefficients Table ===
 st.markdown("### 📋 Logistic Regression Coefficients")
-st.caption("*(Lecture 3: Logit Framework — analogous to Altman Z-Score ratio weights)*")
+st.caption("*Each coefficient shows the log-odds impact of that feature on sanctions probability.*")
 
 coef = logit_model.coef_[0]
 coef_df = pd.DataFrame({

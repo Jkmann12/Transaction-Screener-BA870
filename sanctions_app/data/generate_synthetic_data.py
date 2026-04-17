@@ -2,7 +2,7 @@
 
 Generates realistic international wire transfers following FATF typology patterns.
 Transaction amounts follow Benford's Law for legitimate transactions,
-with deliberate violations for suspicious transactions (per Lecture 4).
+with deliberate violations for suspicious transactions.
 """
 import numpy as np
 import pandas as pd
@@ -70,6 +70,34 @@ _raw_weights = np.array([0.12, 0.08, 0.07, 0.07, 0.06, 0.06, 0.05, 0.04, 0.04, 0
 NORMAL_WEIGHTS = _raw_weights / _raw_weights.sum()  # normalize to exactly 1.0
 
 SANCTIONED_TX_COUNTRIES = ['IR', 'KP', 'SY', 'CU', 'RU', 'BY']
+
+# All countries shown on the Risk Dashboard choropleth map — used to guarantee coverage
+ALL_MAP_COUNTRIES = [
+    # North America & Caribbean
+    'US', 'CA', 'MX', 'GT', 'HN', 'SV', 'NI', 'CR', 'PA',
+    'CU', 'DO', 'JM', 'TT', 'HT',
+    # South America
+    'BR', 'AR', 'CL', 'CO', 'PE', 'VE', 'EC', 'BO', 'PY', 'UY',
+    # Western Europe
+    'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'CH', 'SE',
+    'NO', 'DK', 'FI', 'IE', 'PT', 'LU', 'MT', 'IS',
+    # Central & Eastern Europe
+    'PL', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SK', 'SI', 'EE', 'LV',
+    'LT', 'GR', 'CY', 'RS', 'AL', 'BA', 'MK', 'MD', 'UA', 'BY',
+    # Middle East
+    'AE', 'SA', 'QA', 'KW', 'BH', 'OM', 'JO', 'LB', 'IL', 'TR',
+    'IR', 'IQ', 'SY', 'YE',
+    # Asia-Pacific
+    'JP', 'CN', 'HK', 'SG', 'KR', 'TW', 'IN', 'PK', 'BD', 'LK',
+    'NP', 'MY', 'TH', 'ID', 'PH', 'VN', 'KH', 'MM', 'MN', 'AU', 'NZ',
+    # Central Asia & Caucasus
+    'RU', 'KZ', 'UZ', 'AZ', 'GE', 'AM', 'KG', 'TJ', 'TM', 'AF',
+    # Africa
+    'EG', 'DZ', 'MA', 'TN', 'LY', 'SD', 'NG', 'GH', 'SN', 'CI',
+    'CM', 'ML', 'CF', 'KE', 'TZ', 'ET', 'UG', 'RW', 'SO', 'SS',
+    'ZA', 'ZW', 'ZM', 'MZ', 'BW', 'NA', 'AO', 'MG', 'MU', 'CD',
+    'KP',
+]
 
 
 def generate_benford_amount(min_val: float = 1000, max_val: float = 10_000_000) -> float:
@@ -191,6 +219,41 @@ def generate_data(n: int = 10000, random_state: int = 42) -> pd.DataFrame:
         })
 
     df = pd.DataFrame(records)
+
+    # Guarantee at least MIN_PER_COUNTRY transactions for every map country
+    MIN_PER_COUNTRY = 3
+    covered = set(df['receiver_country'].unique())
+    top_up = []
+    for country in ALL_MAP_COUNTRIES:
+        if country in covered:
+            continue
+        is_sanctioned = 1 if country in SANCTIONED_COUNTRIES else 0
+        for j in range(MIN_PER_COUNTRY):
+            sender_country = np.random.choice(NORMAL_COUNTRIES, p=NORMAL_WEIGHTS)
+            if is_sanctioned:
+                amount = generate_suspicious_amount()
+                receiver_name = random.choice(SANCTIONED_ENTITIES)
+                currency = 'USD' if np.random.random() < 0.6 else COUNTRY_CURRENCIES.get(country, 'USD')
+            else:
+                amount = generate_benford_amount()
+                receiver_name = random.choice(LEGITIMATE_COMPANIES)
+                currency = COUNTRY_CURRENCIES.get(country, 'USD')
+            date = start_date + timedelta(days=np.random.randint(0, date_range))
+            top_up.append({
+                'transaction_id': f'TXN_CU{len(top_up)+1:05d}',
+                'date': date.strftime('%Y-%m-%d'),
+                'sender_name': random.choice(LEGITIMATE_COMPANIES),
+                'sender_country': sender_country,
+                'receiver_name': receiver_name,
+                'receiver_country': country,
+                'amount': amount,
+                'currency': currency,
+                'is_sanctioned': is_sanctioned,
+            })
+
+    if top_up:
+        df = pd.concat([df, pd.DataFrame(top_up)], ignore_index=True)
+
     df = df.sample(frac=1, random_state=random_state).reset_index(drop=True)
     return df
 

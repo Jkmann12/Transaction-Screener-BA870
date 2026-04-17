@@ -1,8 +1,8 @@
 """Benford's Law analysis utilities for fraud detection.
 
-Lecture 4 Connection: Benford's Law states that in naturally occurring financial data,
-the leading digit d appears with probability log10(1 + 1/d). Deviations may indicate
-fabricated or manipulated transaction data, similar to the Beneish M-Score approach.
+Benford's Law states that in naturally occurring financial data the leading digit d
+appears with probability log10(1 + 1/d). Deviations may indicate fabricated or
+manipulated transaction data.
 """
 import numpy as np
 from scipy.stats import chisquare

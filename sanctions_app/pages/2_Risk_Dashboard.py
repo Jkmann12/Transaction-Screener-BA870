@@ -4,12 +4,6 @@ BA775 Financial Analytics | Boston University
 
 Visual overview of screening results: world heatmap, risk score histogram,
 and top flagged transactions table.
-
-Lecture 3-4 Connection: Risk score histogram uses High/Grey/Low threshold zones
-directly modeled on Altman Z-Score discrimination zones:
-- Score > high_threshold = High Risk (analogous to Z < 1.80 distress zone)
-- Score between thresholds = Grey Zone (analogous to 1.80 < Z < 2.99)
-- Score < grey_threshold = Low Risk (analogous to Z > 2.99 safe zone)
 """
 import streamlit as st
 import pandas as pd
@@ -66,24 +60,50 @@ st.markdown("### 🗺️ Geographic Risk Distribution")
 
 # ISO-2 to ISO-3 mapping (Plotly choropleth requires ISO-3)
 ISO2_TO_ISO3 = {
-    'AF': 'AFG', 'AE': 'ARE', 'AR': 'ARG', 'AM': 'ARM', 'AU': 'AUS',
-    'AT': 'AUT', 'AZ': 'AZE', 'BD': 'BGD', 'BE': 'BEL', 'BH': 'BHR',
-    'BY': 'BLR', 'BR': 'BRA', 'CA': 'CAN', 'CF': 'CAF', 'CH': 'CHE',
-    'CL': 'CHL', 'CM': 'CMR', 'CN': 'CHN', 'CO': 'COL', 'CU': 'CUB',
-    'CZ': 'CZE', 'DE': 'DEU', 'DK': 'DNK', 'EC': 'ECU', 'EG': 'EGY',
-    'ES': 'ESP', 'ET': 'ETH', 'FR': 'FRA', 'GB': 'GBR', 'GE': 'GEO',
-    'GH': 'GHA', 'GR': 'GRC', 'HK': 'HKG', 'HT': 'HTI', 'HU': 'HUN',
-    'ID': 'IDN', 'IL': 'ISR', 'IN': 'IND', 'IQ': 'IRQ', 'IR': 'IRN',
-    'IT': 'ITA', 'JP': 'JPN', 'KE': 'KEN', 'KG': 'KGZ', 'KP': 'PRK',
-    'KR': 'KOR', 'KW': 'KWT', 'KZ': 'KAZ', 'LB': 'LBN', 'LY': 'LBY',
-    'MA': 'MAR', 'ML': 'MLI', 'MM': 'MMR', 'MX': 'MEX', 'MY': 'MYS',
-    'NG': 'NGA', 'NL': 'NLD', 'NO': 'NOR', 'NZ': 'NZL', 'PE': 'PER',
-    'PH': 'PHL', 'PK': 'PAK', 'PL': 'POL', 'PT': 'PRT', 'QA': 'QAT',
-    'RU': 'RUS', 'SA': 'SAU', 'SD': 'SDN', 'SE': 'SWE', 'SG': 'SGP',
-    'SN': 'SEN', 'SO': 'SOM', 'SS': 'SSD', 'SY': 'SYR', 'TH': 'THA',
-    'TJ': 'TJK', 'TM': 'TKM', 'TR': 'TUR', 'TZ': 'TZA', 'UA': 'UKR',
-    'US': 'USA', 'UZ': 'UZB', 'VE': 'VEN', 'VN': 'VNM', 'YE': 'YEM',
-    'ZA': 'ZAF', 'CF': 'CAF', 'ZW': 'ZWE',
+    # North America & Caribbean
+    'US': 'USA', 'CA': 'CAN', 'MX': 'MEX', 'GT': 'GTM', 'HN': 'HND',
+    'SV': 'SLV', 'NI': 'NIC', 'CR': 'CRI', 'PA': 'PAN', 'CU': 'CUB',
+    'DO': 'DOM', 'JM': 'JAM', 'TT': 'TTO', 'HT': 'HTI',
+    # South America
+    'BR': 'BRA', 'AR': 'ARG', 'CL': 'CHL', 'CO': 'COL', 'PE': 'PER',
+    'VE': 'VEN', 'EC': 'ECU', 'BO': 'BOL', 'PY': 'PRY', 'UY': 'URY',
+    # Western Europe
+    'GB': 'GBR', 'DE': 'DEU', 'FR': 'FRA', 'IT': 'ITA', 'ES': 'ESP',
+    'NL': 'NLD', 'BE': 'BEL', 'AT': 'AUT', 'CH': 'CHE', 'SE': 'SWE',
+    'NO': 'NOR', 'DK': 'DNK', 'FI': 'FIN', 'IE': 'IRL', 'PT': 'PRT',
+    'LU': 'LUX', 'MT': 'MLT', 'IS': 'ISL',
+    # Central & Eastern Europe
+    'PL': 'POL', 'CZ': 'CZE', 'HU': 'HUN', 'RO': 'ROU', 'BG': 'BGR',
+    'HR': 'HRV', 'SK': 'SVK', 'SI': 'SVN', 'EE': 'EST', 'LV': 'LVA',
+    'LT': 'LTU', 'GR': 'GRC', 'CY': 'CYP', 'RS': 'SRB', 'AL': 'ALB',
+    'BA': 'BIH', 'MK': 'MKD', 'MD': 'MDA', 'UA': 'UKR', 'BY': 'BLR',
+    # Middle East
+    'AE': 'ARE', 'SA': 'SAU', 'QA': 'QAT', 'KW': 'KWT', 'BH': 'BHR',
+    'OM': 'OMN', 'JO': 'JOR', 'LB': 'LBN', 'IL': 'ISR', 'TR': 'TUR',
+    'IR': 'IRN', 'IQ': 'IRQ', 'SY': 'SYR', 'YE': 'YEM',
+    # Asia-Pacific
+    'JP': 'JPN', 'CN': 'CHN', 'HK': 'HKG', 'SG': 'SGP', 'KR': 'KOR',
+    'TW': 'TWN', 'IN': 'IND', 'PK': 'PAK', 'BD': 'BGD', 'LK': 'LKA',
+    'NP': 'NPL', 'MY': 'MYS', 'TH': 'THA', 'ID': 'IDN', 'PH': 'PHL',
+    'VN': 'VNM', 'KH': 'KHM', 'MM': 'MMR', 'MN': 'MNG', 'AU': 'AUS',
+    'NZ': 'NZL',
+    # Central Asia & Caucasus
+    'RU': 'RUS', 'KZ': 'KAZ', 'UZ': 'UZB', 'AZ': 'AZE', 'GE': 'GEO',
+    'AM': 'ARM', 'KG': 'KGZ', 'TJ': 'TJK', 'TM': 'TKM', 'AF': 'AFG',
+    # Africa — North
+    'EG': 'EGY', 'DZ': 'DZA', 'MA': 'MAR', 'TN': 'TUN', 'LY': 'LBY',
+    'SD': 'SDN',
+    # Africa — West
+    'NG': 'NGA', 'GH': 'GHA', 'SN': 'SEN', 'CI': 'CIV', 'CM': 'CMR',
+    'ML': 'MLI', 'CF': 'CAF',
+    # Africa — East & Horn
+    'KE': 'KEN', 'TZ': 'TZA', 'ET': 'ETH', 'UG': 'UGA', 'RW': 'RWA',
+    'SO': 'SOM', 'SS': 'SSD',
+    # Africa — Southern
+    'ZA': 'ZAF', 'ZW': 'ZWE', 'ZM': 'ZMB', 'MZ': 'MOZ', 'BW': 'BWA',
+    'NA': 'NAM', 'AO': 'AGO', 'MG': 'MDG', 'MU': 'MUS',
+    # Other
+    'CD': 'COD', 'KP': 'PRK',
 }
 
 country_risk = results.groupby('receiver_country').agg(

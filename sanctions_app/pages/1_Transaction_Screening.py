@@ -3,10 +3,7 @@ Page 1: Transaction Screening
 BA775 Financial Analytics | Boston University
 
 Core screening interface — upload transactions and run the ML sanctions detection pipeline.
-
-Lecture 3 Connection: This pipeline uses Logistic Regression (same logit framework as
-Altman's Z-Score distress prediction) combined with XGBoost to generate composite
-risk probabilities for each transaction.
+Uses Logistic Regression combined with XGBoost to generate composite risk probabilities.
 """
 import streamlit as st
 import pandas as pd
